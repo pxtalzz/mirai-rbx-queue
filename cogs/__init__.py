@@ -1,1 +1,2 @@
-# Cogs package
+async def setup(bot):
+    pass
