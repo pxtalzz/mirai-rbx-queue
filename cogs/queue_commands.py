@@ -38,16 +38,6 @@ class QueueCommands(commands.Cog):
             return True
         return app_commands.check(predicate)
 
-    @app_commands.command(name="queue", description="Manage the Robux order queue")
-    @app_commands.describe(
-        action="The queue action to perform",
-        user="The user to perform the action on",
-        position="The new position for the user",
-        amount="The Robux amount (optional)"
-    )
-    async def queue_command(self, interaction: discord.Interaction):
-        pass  # This will be handled by subcommands
-
     # Subcommand group for queue management
     queue_group = app_commands.Group(name="queue", description="Queue management commands")
 
