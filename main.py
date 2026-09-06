@@ -32,6 +32,14 @@ async def load_cogs():
 async def on_ready():
     logger.info(f"Bot logged in as {bot.user}")
     await load_cogs()
+    
+    # Set bot status
+    activity = discord.Activity(
+        type=discord.ActivityType.watching,
+        name="over /mirai <:foggyheart_white:1543665199645593763>"
+    )
+    await bot.change_presence(activity=activity)
+    
     try:
         synced = await bot.tree.sync()
         logger.info(f"Synced {len(synced)} command(s)")
