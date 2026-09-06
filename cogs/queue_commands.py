@@ -9,6 +9,9 @@ from config import STAFF_ROLE_ID, SERVER_ID
 
 logger = logging.getLogger(__name__)
 
+# Color constant
+EMBED_COLOR = 0xf3f3f3
+
 class QueueCommands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -24,14 +27,14 @@ class QueueCommands(commands.Cog):
             staff_role = interaction.guild.get_role(STAFF_ROLE_ID)
             if not staff_role:
                 await interaction.response.send_message(
-                    "❌ Staff role not configured. Please contact an administrator.",
+                    "x_x Staff role not configured. Please contact an administrator.",
                     ephemeral=True
                 )
                 return False
             
             if staff_role not in interaction.user.roles:
                 await interaction.response.send_message(
-                    "❌ You don't have permission to use this command. Only staff can manage the queue.",
+                    "x_x You don't have permission to use this command. Only staff can manage the queue.",
                     ephemeral=True
                 )
                 return False
@@ -51,7 +54,7 @@ class QueueCommands(commands.Cog):
         position = await self.db.get_user_position(user.id)
         if position is not None:
             await interaction.followup.send(
-                f"⚠️ {user.mention} is already in the queue at position #{position + 1}.",
+                f"(´；ω；`) {user.mention} is already in the queue at position #{position + 1}.",
                 ephemeral=True
             )
             return
@@ -63,9 +66,9 @@ class QueueCommands(commands.Cog):
         # Send notification to customer
         try:
             await user.send(
-                f"🛒 **You've been added to the order queue!**\n"
-                f"Your order: {amount:,} Robux" if amount else f"🛒 **You've been added to the order queue!**\n"
-                f"Your order has been added to the queue. Please wait for your turn! ♡"
+                f"^^ **You've been added to the order queue!**\n"
+                f"Your order: {amount:,} Robux" if amount else f"^^ **You've been added to the order queue!**\n"
+                f"Your order has been added to the queue. Please wait for your turn! (´▽`)"
             )
         except discord.Forbidden:
             logger.warning(f"Could not DM user {user.id}")
@@ -74,7 +77,7 @@ class QueueCommands(commands.Cog):
         await log_action(self.bot, interaction.user, user, "Added to queue", amount)
         
         await interaction.followup.send(
-            f"✅ {user.mention} has been added to the queue.",
+            f"{user.mention} has been added to the queue !*!* <a:pink_check:1543651964477382772>",
             ephemeral=True
         )
 
@@ -88,7 +91,7 @@ class QueueCommands(commands.Cog):
         position = await self.db.get_user_position(user.id)
         if position is None:
             await interaction.followup.send(
-                f"⚠️ {user.mention} is not in the queue.",
+                f"(´；ω；`) {user.mention} is not in the queue.",
                 ephemeral=True
             )
             return
@@ -101,7 +104,7 @@ class QueueCommands(commands.Cog):
         await log_action(self.bot, interaction.user, user, "Removed from queue")
         
         await interaction.followup.send(
-            f"✅ {user.mention} has been removed from the queue.",
+            f"{user.mention} has been removed from the queue (´▽`)",
             ephemeral=True
         )
 
@@ -115,7 +118,7 @@ class QueueCommands(commands.Cog):
         position = await self.db.get_user_position(user.id)
         if position is None:
             await interaction.followup.send(
-                f"⚠️ {user.mention} is not in the queue.",
+                f"(´；ω；`) {user.mention} is not in the queue.",
                 ephemeral=True
             )
             return
@@ -127,8 +130,8 @@ class QueueCommands(commands.Cog):
         # Send completion notification to customer
         try:
             await user.send(
-                f"✅ **Order Completed!**\n"
-                f"Your Robux order has been completed. Thank you for ordering! ♡"
+                f"^^ **Order Completed!**\n"
+                f"Your Robux order has been completed. Thank you for ordering! (´▽`)"
             )
         except discord.Forbidden:
             logger.warning(f"Could not DM user {user.id}")
@@ -137,7 +140,7 @@ class QueueCommands(commands.Cog):
         await log_action(self.bot, interaction.user, user, "Order completed")
         
         await interaction.followup.send(
-            f"✅ {user.mention}'s order has been completed and removed from the queue.",
+            f"{user.mention}'s order has been completed and removed from the queue (´▽`)",
             ephemeral=True
         )
 
@@ -151,7 +154,7 @@ class QueueCommands(commands.Cog):
         current_position = await self.db.get_user_position(user.id)
         if current_position is None:
             await interaction.followup.send(
-                f"⚠️ {user.mention} is not in the queue.",
+                f"(´；ω；`) {user.mention} is not in the queue.",
                 ephemeral=True
             )
             return
@@ -162,7 +165,7 @@ class QueueCommands(commands.Cog):
         # Validate new position
         if position < 1 or position > queue_length:
             await interaction.followup.send(
-                f"⚠️ Invalid position. Queue length is {queue_length}.",
+                f"(´；ω；`) Invalid position. Queue length is {queue_length}.",
                 ephemeral=True
             )
             return
@@ -175,7 +178,7 @@ class QueueCommands(commands.Cog):
         await log_action(self.bot, interaction.user, user, f"Moved to position #{position}")
         
         await interaction.followup.send(
-            f"✅ {user.mention} has been moved to position #{position}.",
+            f"{user.mention} has been moved to position #{position} (´▽`)",
             ephemeral=True
         )
 
@@ -191,7 +194,7 @@ class QueueCommands(commands.Cog):
         
         if position is None:
             await interaction.followup.send(
-                f"❌ {user.mention} is not in the queue.",
+                f"(´；ω；`) {user.mention} is not in the queue.",
                 ephemeral=True
             )
             return
@@ -200,11 +203,11 @@ class QueueCommands(commands.Cog):
         ahead = position
         
         embed = discord.Embed(
-            title="🛒 Your Order",
+            title=":wind_chime:  ◠◠  rbx order qu__*eu*__e    ₊    !!",
             description=f"You are currently **#{position + 1}** in the queue.\n\n"
                        f"There are **{ahead}** orders ahead of you.\n\n"
-                       f"Please be patient while your order is being processed! ♡",
-            color=0x9b59b6
+                       f"Please be patient while your order is being processed! (´▽`)",
+            color=EMBED_COLOR
         )
         embed.set_footer(text=f"Total in queue: {queue_length}")
         
@@ -218,18 +221,18 @@ class QueueCommands(commands.Cog):
         
         if not queue_data:
             embed = discord.Embed(
-                title="🛒 ROBux ORDER QUEUE",
+                title=":wind_chime:  ◠◠  rbx order qu__*eu*__e    ₊    !!",
                 description="The queue is currently empty.",
-                color=0x9b59b6
+                color=EMBED_COLOR
             )
         else:
             queue_text = "\n".join(
                 [f"{i + 1}. <@{user_id}>" for i, (user_id, amount) in enumerate(queue_data)]
             )
             embed = discord.Embed(
-                title="🛒 ROBux ORDER QUEUE",
+                title=":wind_chime:  ◠◠  rbx order qu__*eu*__e    ₊    !!",
                 description=queue_text,
-                color=0x9b59b6
+                color=EMBED_COLOR
             )
             embed.set_footer(text=f"Total orders: {len(queue_data)}")
         
@@ -243,17 +246,17 @@ class QueueCommands(commands.Cog):
         
         if not queue_data:
             await interaction.followup.send(
-                "📭 The queue is currently empty.",
+                "(´；ω；`) The queue is currently empty.",
                 ephemeral=True
             )
             return
         
         next_user_id, amount = queue_data[0]
         embed = discord.Embed(
-            title="🎯 Next Order",
+            title="^^ Next Order",
             description=f"<@{next_user_id}> is currently next in line!" +
                        (f"\nOrder: {amount:,} Robux" if amount else ""),
-            color=0x2ecc71
+            color=EMBED_COLOR
         )
         
         await interaction.followup.send(embed=embed, ephemeral=True)
@@ -281,7 +284,7 @@ class QueueCommands(commands.Cog):
                 await log_action(self.bot, interaction.user, None, "Cleared entire queue")
                 
                 await interaction.response.send_message(
-                    "✅ The queue has been cleared.",
+                    "The queue has been cleared (´▽`)",
                     ephemeral=True
                 )
                 self.stop()
@@ -293,7 +296,7 @@ class QueueCommands(commands.Cog):
                     return
                 
                 await interaction.response.send_message(
-                    "❌ Queue clear cancelled.",
+                    "Queue clear cancelled (´；ω；`)",
                     ephemeral=True
                 )
                 self.stop()
@@ -304,7 +307,7 @@ class QueueCommands(commands.Cog):
         view.bot = self.bot
         
         await interaction.response.send_message(
-            "⚠️ Are you sure you want to clear the entire queue? This action cannot be undone.",
+            "(´；ω；`) Are you sure you want to clear the entire queue? This action cannot be undone.",
             view=view,
             ephemeral=True
         )
