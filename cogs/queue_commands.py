@@ -203,10 +203,10 @@ class QueueCommands(commands.Cog):
         ahead = position
         
         embed = discord.Embed(
-            title=":wind_chime:  ◠◠  rbx order qu__*eu*__e    ₊    !!",
-            description=f"You are currently **#{position + 1}** in the queue.\n\n"
-                       f"There are **{ahead}** orders ahead of you.\n\n"
-                       f"Please be patient while your order is being processed! (´▽`)",
+            title="your order !! <a:pinkexclaim:1543651783354753074>",
+            description=f"you are currently #{position + 1} in the queue !*!*\n\n"
+                       f"there are {ahead} orders ahead of you.\n\n"
+                       f"please be patient while we process orders <a:dots:1543641369694961746>",
             color=EMBED_COLOR
         )
         embed.set_footer(text=f"Total in queue: {queue_length}")
